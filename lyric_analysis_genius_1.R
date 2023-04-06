@@ -1,12 +1,19 @@
 # geniusR
 
+## https://info5940.infosci.cornell.edu/notes/text-analysis/hamilton/
+
 #install.packages("geniusr")
 
 library(geniusr)
 library(dplyr)
 library(tidytext)
 library(wordcloud)
+library(wordcloud2)
 library(ggwordcloud)
+library(stopwords)
+library(quanteda)
+install.packages("textdata")
+library(textdata)
 
 
 ############## KEEP SECRET ###########################
@@ -22,7 +29,9 @@ learnr::run_tutorial("genius_tutorial", "genius")
 # Browse the genius website
 browse_genius()
 
-# 1) Get lyrics for top 10 songs
+# 1) Get lyrics for top 10 songs on Spotify
+
+################DO THE SAME FOR YOUTUBE ##########################
 
 # a) Download the lyrics
 
@@ -46,7 +55,7 @@ sauti_sol_lil_mama_tokenized %>%
   count(word, sort = TRUE)
 
 sauti_sol_lil_mama_tokenized_tidy <- sauti_sol_lil_mama_tokenized %>%
-  anti_join(stop_words)
+  anti_join(get_stopwords(source = "snowball"))
 
 # Top words again
 sauti_sol_lil_mama_tokenized_tidy %>%
@@ -58,9 +67,51 @@ sauti_sol_lil_mama_tokenized_tidy_top <- sauti_sol_lil_mama_tokenized_tidy %>%
   group_by(word) %>%
   mutate(count = n()) %>%
   select(word, count) %>%
-  distinct()
+  distinct() %>%
+  ungroup() %>%
+  arrange(desc(count)) %>%
+  slice_max(count, n = 19)
 
-wordcloud(sauti_sol_lil_mama_tokenized_tidy_top$word, sauti_sol_lil_mama_tokenized_tidy_top$count,
-          min.freq = 2,
-          max.words=200, random.order=FALSE, rot.per=0.35, 
-          colors=brewer.pal(8, "Dark2"))
+set.seed(1)
+ggplot(sauti_sol_lil_mama_tokenized_tidy_top, aes(label = word, size = count, color = word)) +
+  geom_text_wordcloud(shape = "diamond") +
+  scale_size_area(max_size = 20) +
+  theme_minimal()
+
+# c) Melanin
+
+sauti_sol_melanin_tokenized <- sauti_sol_melanin %>%
+  unnest_tokens(word, line)
+
+sauti_sol_melanin_tokenized %>%
+  count(word, sort = TRUE)
+
+sauti_sol_melanin_tokenized_tidy <- sauti_sol_melanin_tokenized %>%
+  anti_join(get_stopwords(source = "snowball"))
+
+# Top words again
+sauti_sol_melanin_tokenized_tidy %>%
+  count(word, sort = TRUE)
+
+# Create a new dataframe with the top words
+
+sauti_sol_melanin_tokenized_tidy_top <- sauti_sol_melanin_tokenized_tidy %>%
+  group_by(word) %>%
+  mutate(count = n()) %>%
+  select(word, count) %>%
+  distinct() %>%
+  ungroup() %>%
+  arrange(desc(count)) %>%
+  slice_max(count, n = 19)
+
+set.seed(1)
+ggplot(sauti_sol_melanin_tokenized_tidy_top, aes(label = word, size = count, color = word)) +
+  geom_text_wordcloud(shape = "diamond") +
+  scale_size_area(max_size = 20) +
+  theme_minimal()
+
+##########library(tm) should have swahili stopwords#############
+
+# Sentiment analysis
+
+############## review with ChatGPT################

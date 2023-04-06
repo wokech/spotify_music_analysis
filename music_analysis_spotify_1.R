@@ -92,7 +92,7 @@ nyashinski_1 %>%
   kable()
 
 bensoul_1 %>% 
-  count(key_mode, key, sort = TRUE) %>% 
+  count(key_mode, sort = TRUE) %>% 
   head(5) %>%
   kable()
 
@@ -233,88 +233,108 @@ khaligraph_jones_1 %>%
 # Joyplot of the emotional rollercoasters for the various albums
 
 #install.packages("ggjoy")
-library(ggjoy)
+library(ggjoy) #ggjoy has been deprecated for ggridges
 library(ggridges)
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Sauti Sol's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+
 
 nviiri_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Nviiri's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 otile_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Otile Brown's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 nyashinski_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Nyashinski's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 bensoul_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Bensoul's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 wakadinali_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Wakadinali's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 buruklyn_boyz_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Buruklyn Boyz's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 h_art_the_band_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of H_art the Band's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 mejja_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Mejja's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 khaligraph_jones_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = valence, y = album_name)) + 
-  geom_joy() + 
-  theme_joy() +
-  ggtitle("Joyplot of Sauti Sol's joy distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Khaligraph's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 # 5) Perform EDA of musical characteristics for 1 artist - Sauti Sol
 
@@ -329,107 +349,119 @@ sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's valence distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of musical positiveness in Sauti Sol's albums", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = danceability, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's danceability distributions", subtitle = "Based on danceability pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of danceability in Sauti Sol's albums", subtitle = "Based on danceability pulled from Spotify's Web API with spotifyr")
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = energy, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's energy distributions", subtitle = "Based on energy pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of intensity and activity in Sauti Sol's albums", subtitle = "Based on energy pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = loudness, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's loudness distributions", subtitle = "Based on loudness pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of loudness in Sauti Sol's albums", subtitle = "Based on loudness pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = speechiness, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's speechiness distributions", subtitle = "Based on speechiness pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the presence of spoken words in Sauti Sol's albums", subtitle = "Based on speechiness pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = acousticness, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's acousticness distributions", subtitle = "Based on acousticness pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of acousticness in Sauti Sol's albums", subtitle = "Based on acousticness pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = instrumentalness, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's instrumentalness distributions", subtitle = "Based on instrumentalness pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the instrumentalness of Sauti Sol's albums", subtitle = "Based on instrumentalness pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = liveness, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's liveness distributions", subtitle = "Based on liveness pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the liveness of Sauti Sol's albums", subtitle = "Based on liveness pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = tempo, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's tempo distributions", subtitle = "Based on tempo pulled from Spotify's Web API with spotifyr")
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the tempo of Sauti Sol's albums", subtitle = "Based on tempo pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
-  ggplot(aes(x = duration_ms, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  ggplot(aes(x = duration_ms/60000, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
-  ggtitle("Density plot of Sauti Sol's duration_ms distributions", subtitle = "Based on duration_ms pulled from Spotify's Web API with spotifyr")
+  labs(x = "Duration (min)",
+       y = "Album Name") +
+  ggtitle("Distribution of the duration of Sauti Sol's albums", subtitle = "Based on duration_ms pulled from Spotify's Web API with spotifyr")
 
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = time_signature, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's time_signature distributions", subtitle = "Based on time_signature pulled from Spotify's Web API with spotifyr")
 
 
@@ -437,9 +469,10 @@ sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = key, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's key distributions", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 
@@ -447,9 +480,10 @@ sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = mode, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's mode distributions", subtitle = "Based on mode pulled from Spotify's Web API with spotifyr")
 
 
@@ -457,27 +491,39 @@ sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = key_name, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's key_name distributions", subtitle = "Based on key_name pulled from Spotify's Web API with spotifyr")
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = key_mode, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's key_mode distributions", subtitle = "Based on key_mode pulled from Spotify's Web API with spotifyr")
 
 sauti_sol_1 %>%
   group_by(album_name) %>%
   filter(album_type == "album") %>% 
   ggplot(aes(x = mode_name, y = album_name, fill = album_name)) + 
-  geom_density_ridges() + 
+  geom_density_ridges(show.legend = FALSE) + 
   theme_ridges() +
-  scale_fill_brewer(palette = "Blues") +
+  scale_fill_brewer(palette = "Greens") +
+  labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's mode_name distributions", subtitle = "Based on mode_name pulled from Spotify's Web API with spotifyr")
 
+# 6) Most popular tracks on Spotify - Sauti Sol
+
+sauti_sol_2 %>%
+  select(name, popularity, album.name) %>%
+  arrange(desc(popularity)) %>%
+  ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
+  geom_col() + 
+  coord_flip() +
+  theme_minimal()
 
