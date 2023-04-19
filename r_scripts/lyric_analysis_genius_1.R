@@ -12,7 +12,7 @@ library(wordcloud2)
 library(ggwordcloud)
 library(stopwords)
 library(quanteda)
-install.packages("textdata")
+#install.packages("textdata")
 library(textdata)
 
 
@@ -54,8 +54,12 @@ sauti_sol_lil_mama_tokenized <- sauti_sol_lil_mama %>%
 sauti_sol_lil_mama_tokenized %>%
   count(word, sort = TRUE)
 
+swahili_stopwords <- c("na", "ya", "kwa", "ni", "kwamba", "au", "lakini", "yake", "yangu", "yao", "zake", "hizo", "hizi", "hizo", "hizo", "zao", "zetu", "yoyote", "yote", "hapo", "hata", "pia", "tu", "kweli", "sana", "nyingi", "wengi", "kidogo", "kila")
+
+swahili_stopwords_df <- data.frame(stopword = swahili_stopwords)
+
 sauti_sol_lil_mama_tokenized_tidy <- sauti_sol_lil_mama_tokenized %>%
-  anti_join(get_stopwords(source = "snowball"))
+  anti_join(get_stopwords(source = "snowball")) 
 
 # Top words again
 sauti_sol_lil_mama_tokenized_tidy %>%
