@@ -15,6 +15,7 @@ library(lubridate)
 ############## KEEP SECRET ###########################
 Sys.setenv(SPOTIFY_CLIENT_ID = '')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = '')
+
 ######################################################
 
 access_token <- get_spotify_access_token()
@@ -519,7 +520,7 @@ sauti_sol_1 %>%
 
 # 6) Most popular tracks on Spotify - Sauti Sol
 
-sauti_sol_2 %>%
+khaligraph_jones_2 %>%
   select(name, popularity, album.name) %>%
   arrange(desc(popularity)) %>%
   ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
