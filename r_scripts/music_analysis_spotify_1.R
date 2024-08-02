@@ -27,7 +27,7 @@ access_token <- get_spotify_access_token()
 # a) Get the artist audio features for all ten musicians
 
 # Use the search_spotify() to get all the artist features
-# The use the get_artist_audio_features() function defaults to "album" 
+# Then use the get_artist_audio_features() function defaults to "album" 
 # so you might want to include "single."
 
 sauti_sol_1 <- get_artist_audio_features('sauti sol', include_groups = c("single", "album"))
@@ -41,6 +41,14 @@ h_art_the_band_1 <- get_artist_audio_features('h_art the band', include_groups =
 mejja_1 <- get_artist_audio_features('mejja', include_groups = c("single", "album"))
 khaligraph_jones_1 <- get_artist_audio_features('khaligraph jones', include_groups = c("single", "album"))
 
+# Combine audio features dataframes
+
+combi_audio_features <- rbind(sauti_sol_1, nviiri_1, otile_1, nyashinski_1, bensoul_1,
+                              wakadinali_1, buruklyn_boyz_1, h_art_the_band_1, mejja_1, khaligraph_jones_1)
+
+# Save the dataframe
+saveRDS(combi_audio_features, "saved_data/combi_audio_features_1.Rda")
+
 # b) Get the artist's top tracks according to spotify
 
 sauti_sol_2 <- get_artist_top_tracks('4Rj9lQm9oSiMlirgpsM6eo')
@@ -53,6 +61,13 @@ buruklyn_boyz_2 <- get_artist_top_tracks('00WWkvpiOhhZNlk2KTqYhX')
 h_art_the_band_2 <- get_artist_top_tracks('0m6SCIzf7kP9iylizWmIp1')
 mejja_2 <- get_artist_top_tracks('5VnDOE1MEaJ0VOgSypOi3u')
 khaligraph_jones_2 <- get_artist_top_tracks('1xxXRVpuEm3X3p1QEm61Az')
+
+# Combine artist top tracks
+combi_artist_top_tracks <- rbind(sauti_sol_2, nviiri_2, otile_2, nyashinski_2, bensoul_2,
+                                 wakadinali_2, buruklyn_boyz_2, h_art_the_band_2, mejja_2, khaligraph_jones_2)
+
+# Save the dataframe
+saveRDS(combi_artist_top_tracks, "saved_data/combi_artist_top_tracks_1.Rda")
 
 # c) Get the artist albums
 # When you use get_artist() it gives a list but get_artists provides a dataframe
