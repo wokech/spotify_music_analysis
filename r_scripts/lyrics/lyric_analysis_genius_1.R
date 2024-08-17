@@ -15,8 +15,11 @@ library(quanteda)
 #install.packages("textdata")
 library(textdata)
 
-
 ############## KEEP SECRET ###########################
+
+Sys.getenv("GENIUS_CLIENT_ID")
+Sys.getenv("GENIUS_CLIENT_SECRET")
+Sys.getenv("GENIUS_API_TOKEN")
 
 genius_token(force = TRUE)
 
