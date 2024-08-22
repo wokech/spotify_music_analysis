@@ -67,18 +67,18 @@ combi_audio_features_naija <- readRDS("saved_data/combi_audio_features_naija.RDS
 
 # DATA IS STORED IN RDS
 
-rema_2 <- get_artist_top_tracks('46pWGuE3dSwY3bMMXGBvVS')
-burna_boy_2 <- get_artist_top_tracks('3wcj11K77LjEY1PkEazffa')
-ckay_2 <- get_artist_top_tracks('048LktY5zMnakWq7PTtFrz')
-wizkid_2 <- get_artist_top_tracks('3tVQdUvClmAT7URs9V3rsp')
-fireboy_2 <- get_artist_top_tracks('75VKfyoBlkmrJFDqo1o2VY')
-omah_lay_2 <- get_artist_top_tracks('5yOvAmpIR7hVxiS6Ls5DPO')
-ayra_starr_2 <- get_artist_top_tracks('3ZpEKRjHaHANcpk10u6Ntq')
-asake_2 <- get_artist_top_tracks('3a1tBryiczPAZpgoZN9Rzg')
-tems_2 <- get_artist_top_tracks('687cZJR45JO7jhk1LHIbgq')
-yemi_alade_2 <- get_artist_top_tracks('7fKO99ryLDo8VocdtVvwZW')
-davido_2 <- get_artist_top_tracks('0Y3agQaa6g2r0YmHPOO9rh')
-mr_eazi_2 <- get_artist_top_tracks('4TAoP0f9OuWZUesao43xUW')
+# rema_2 <- get_artist_top_tracks('46pWGuE3dSwY3bMMXGBvVS')
+# burna_boy_2 <- get_artist_top_tracks('3wcj11K77LjEY1PkEazffa')
+# ckay_2 <- get_artist_top_tracks('048LktY5zMnakWq7PTtFrz')
+# wizkid_2 <- get_artist_top_tracks('3tVQdUvClmAT7URs9V3rsp')
+# fireboy_2 <- get_artist_top_tracks('75VKfyoBlkmrJFDqo1o2VY')
+# omah_lay_2 <- get_artist_top_tracks('5yOvAmpIR7hVxiS6Ls5DPO')
+# ayra_starr_2 <- get_artist_top_tracks('3ZpEKRjHaHANcpk10u6Ntq')
+# asake_2 <- get_artist_top_tracks('3a1tBryiczPAZpgoZN9Rzg')
+# tems_2 <- get_artist_top_tracks('687cZJR45JO7jhk1LHIbgq')
+# yemi_alade_2 <- get_artist_top_tracks('7fKO99ryLDo8VocdtVvwZW')
+# davido_2 <- get_artist_top_tracks('0Y3agQaa6g2r0YmHPOO9rh')
+# mr_eazi_2 <- get_artist_top_tracks('4TAoP0f9OuWZUesao43xUW')
 
 # # # Combine artist top tracks
 # combi_artist_top_tracks_naija <- rbind(rema_2, burna_boy_2, ckay_2, wizkid_2, fireboy_2, 
@@ -117,7 +117,9 @@ combi_artist_top_tracks_naija <- readRDS("saved_data/combi_artist_top_tracks_nai
 # saveRDS(combi_artist_album_follower_naija, "saved_data/combi_artist_album_follower_naija.RDS")
 
 # # Load the dataframe
-combi_artist_album_follower <- readRDS("saved_data/combi_artist_album_follower_1.RDS")
+combi_artist_album_follower_naija <- readRDS("saved_data/combi_artist_album_follower_naija.RDS")
+
+##############REMA#############################
 
 # 4) Perform EDA of 1st set of characteristics
 # a) Look at the key modes
@@ -129,7 +131,6 @@ combi_audio_features_naija |>
   kable()
 
 # b) Look at the time signature
-
 
 combi_audio_features_naija |> 
   filter(artist_name == "Rema") %>% 
@@ -365,7 +366,7 @@ combi_audio_features_naija |>
 # 6) Most popular tracks on Spotify - Rema
 
 combi_artist_top_tracks_naija |> 
-  filter(combi_artist_top_tracks[[16]][[1]][3] == "Rema") %>%
+  filter(combi_artist_top_tracks_naija[[16]][[1]][3] == "Rema") %>%
   filter(album.name %in% c("Rave & Roses", "HEIS")) %>%
   select(name, popularity, album.name) %>%
   arrange(desc(popularity)) %>%
@@ -373,6 +374,264 @@ combi_artist_top_tracks_naija |>
   geom_col() + 
   coord_flip() +
   theme_minimal()
+
+#######################BURNA BOY#######################
+
+# 4) Perform EDA of 1st set of characteristics
+# a) Look at the key modes
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>% 
+  count(key_mode, sort = TRUE) %>% 
+  head(5) %>%
+  kable()
+
+# b) Look at the time signature
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>% 
+  count(time_signature, sort = TRUE) %>% 
+  head(5) %>%
+  kable()
+
+
+# c) Look at the album release dates
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>% 
+  count(album_release_year, sort = TRUE) %>% 
+  head(5) %>%
+  kable()
+
+
+# 5) Perform EDA of 2nd set of characteristics
+
+# a) Assess the emotions of the various albums using musical characteristics
+
+# Joyplot of the emotional rollercoasters for the various albums
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of Burna Boy's musical positiveness per album", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+
+
+# 6) Perform EDA of musical characteristics for 1 artist - Burna Boy
+
+# a) Assess musical characteristics for Burna Boy
+
+############### geom_joy() = geom_density_ridges() #######################
+# Review: https://wilkelab.org/ggridges/reference/geom_density_ridges.html
+# https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+# Switch to geom_density_ridges()
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = valence, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of musical positiveness in Burna Boy's albums", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = danceability, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of danceability in Burna Boy's albums", subtitle = "Based on danceability pulled from Spotify's Web API with spotifyr")
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = energy, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of intensity and activity in Burna Boy's albums", subtitle = "Based on energy pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = loudness, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of loudness in Burna Boy's albums", subtitle = "Based on loudness pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = speechiness, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the presence of spoken words in Burna Boy's albums", subtitle = "Based on speechiness pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = acousticness, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of acousticness in Burna Boy's albums", subtitle = "Based on acousticness pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = instrumentalness, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the instrumentalness of Burna Boy's albums", subtitle = "Based on instrumentalness pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = liveness, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the liveness of Burna Boy's albums", subtitle = "Based on liveness pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = tempo, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Distribution of the tempo of Burna Boy's albums", subtitle = "Based on tempo pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = duration_ms/60000, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Duration (min)",
+       y = "Album Name") +
+  ggtitle("Distribution of the duration of Burna Boy's albums", subtitle = "Based on duration_ms pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = time_signature, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Density plot of Burna Boy's time_signature distributions", subtitle = "Based on time_signature pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = key, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Density plot of Burna Boy's key distributions", subtitle = "Based on key distributions pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = mode, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Density plot of Burna Boy's mode distributions", subtitle = "Based on mode pulled from Spotify's Web API with spotifyr")
+
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = key_name, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Density plot of Burna Boy's key_name distributions", subtitle = "Based on key_name pulled from Spotify's Web API with spotifyr")
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = key_mode, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(y = "Album Name") +
+  ggtitle("Density plot of Burna Boy's key_mode distributions", subtitle = "Based on key_mode pulled from Spotify's Web API with spotifyr")
+
+combi_audio_features_naija |> 
+  filter(artist_name == "Burna Boy") %>%
+  group_by(album_name) %>%
+  filter(album_type == "album") %>% 
+  ggplot(aes(x = mode_name, y = album_name, fill = album_name)) + 
+  geom_density_ridges(show.legend = FALSE) + 
+  theme_ridges() +
+  scale_fill_brewer(palette = "Greens") +
+  labs(y = "Album Name") +
+  ggtitle("Density plot of Burna Boy's mode_name distributions", subtitle = "Based on mode_name pulled from Spotify's Web API with spotifyr")
+
+# 6) Most popular tracks on Spotify - Burna Boy
+
+combi_artist_top_tracks_naija |> 
+  filter(combi_artist_top_tracks_naija[[16]][[16]][3] == "Burna Boy") %>%
+  filter(album.name %in% c("African Giant", "Redemption", "Love, Damini")) %>%
+  select(name, popularity, album.name) %>%
+  arrange(desc(popularity)) %>%
+  ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
+  geom_col() + 
+  coord_flip() +
+  theme_minimal()
+
+#######################
 
 # 7) Artist Followers
 
