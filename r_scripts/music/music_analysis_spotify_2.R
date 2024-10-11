@@ -119,6 +119,28 @@ combi_artist_top_tracks_naija <- readRDS("saved_data/combi_artist_top_tracks_nai
 # # Load the dataframe
 combi_artist_album_follower_naija <- readRDS("saved_data/combi_artist_album_follower_naija.RDS")
 
+###############################################
+
+#####LOOK AT THE FOLLOWERS AND POPULARITY#####
+
+# 7) Artist Followers
+
+combi_artist_album_follower_naija |> 
+  select(name, popularity, followers.total) %>%
+  arrange(desc(popularity)) %>%
+  ggplot(aes(x = reorder(name,popularity), y = popularity)) +
+  geom_col() + 
+  coord_flip() +
+  theme_minimal()
+
+combi_artist_album_follower_naija |> 
+  select(name, popularity, followers.total) %>%
+  arrange(desc(followers.total)) %>%
+  ggplot(aes(x = reorder(name, followers.total), y = followers.total)) +
+  geom_col() + 
+  coord_flip() +
+  theme_minimal()
+
 ##############REMA#############################
 
 # 4) Perform EDA of 1st set of characteristics
@@ -184,7 +206,7 @@ combi_audio_features_naija |>
   theme_ridges() +
   scale_fill_brewer(palette = "Blues") +
   labs(y = "Album Name") +
-  ggtitle("Distribution of musical positiveness in Rema's albums", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
+  ggtitle("Distribution of musical valence in Rema's albums", subtitle = "Based on valence pulled from Spotify's Web API with spotifyr")
 
 combi_audio_features_naija |> 
   filter(artist_name == "Rema") %>%
@@ -633,20 +655,3 @@ combi_artist_top_tracks_naija |>
 
 #######################
 
-# 7) Artist Followers
-
-combi_artist_album_follower_naija |> 
-  select(name, popularity, followers.total) %>%
-  arrange(desc(popularity)) %>%
-  ggplot(aes(x = reorder(name,popularity), y = popularity)) +
-  geom_col() + 
-  coord_flip() +
-  theme_minimal()
-
-combi_artist_album_follower_naija |> 
-  select(name, popularity, followers.total) %>%
-  arrange(desc(followers.total)) %>%
-  ggplot(aes(x = reorder(name, followers.total), y = followers.total)) +
-  geom_col() + 
-  coord_flip() +
-  theme_minimal()
