@@ -14,42 +14,54 @@ library(dplyr)
 library(purrr)
 library(jsonlite)
 library(usethis)
+library(tidyverse)
 
-# # Create/Edit the .Renviron
-# 
-# Sys.setenv(R_ENVIRON_USER = "C:/R_Files/.Renviron")
-# 
-# #edit_r_environ()
-# 
-# client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
-# client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
+# Create/Edit the .Renviron
+# edit_r_environ()
 
-token_resp <- request("https://accounts.spotify.com/api/token") %>%
-  req_auth_basic(client_id, client_secret) %>%
-  req_body_form(grant_type = "client_credentials") %>%
-  req_perform()
-
-access_token <- token_resp %>%
-  resp_body_json() %>%
-  .$access_token
+client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
+client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
 
 
-artist_resp <- request("https://api.spotify.com/v1/search") %>%
-  req_headers(Authorization = paste("Bearer", access_token)) %>%
-  req_url_query(q = "Sauti Sol", type = "artist", limit = 1) %>%
-  req_perform()
+# ===== Helper: Get fresh token =====
+get_spotify_token <- function() {
+  client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
+  client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
+  
+  if (client_id == "" || client_secret == "") {
+    stop("Spotify Client ID/Secret not found. Set them in .Renviron.")
+  }
+  
+  resp <- request("https://accounts.spotify.com/api/token") %>%
+    req_auth_basic(client_id, client_secret) %>%
+    req_body_form(grant_type = "client_credentials") %>%
+    req_perform()
+  
+  resp %>% resp_body_json() %>% .$access_token
+}
 
-artist_data <- artist_resp %>% resp_body_json()
-artist_id <- artist_data$artists$items[[1]]$id
-artist_id
+access_token <- get_spotify_token()
 
+# ===== Helper: Perform GET request with token =====
+spotify_get <- function(url, query = list()) {
+  request(url) %>%
+    req_headers(Authorization = paste("Bearer", access_token)) %>%
+    req_url_query(!!!query) %>%
+    req_perform() %>%
+    resp_body_json()
+}
 
-albums_resp <- request(paste0("https://api.spotify.com/v1/artists/", artist_id, "/albums")) %>%
-  req_headers(Authorization = paste("Bearer", access_token)) %>%
-  req_url_query(include_groups = "album,single", limit = 50) %>%
-  req_perform()
+# ===== Step 1: Get Artist ID for Sauti Sol =====
+artist_id <- spotify_get(
+  "https://api.spotify.com/v1/search",
+  list(q = "Sauti Sol", type = "artist", limit = 1)
+)$artists$items[[1]]$id
 
-albums_data <- albums_resp %>% resp_body_json()
+# ===== Step 2: Get Albums =====
+albums_data <- spotify_get(
+  paste0("https://api.spotify.com/v1/artists/", artist_id, "/albums"),
+  list(include_groups = "album,single", limit = 50)
+)
 
 albums_df <- map_dfr(albums_data$items, function(a) {
   tibble(
@@ -59,37 +71,32 @@ albums_df <- map_dfr(albums_data$items, function(a) {
     total_tracks = a$total_tracks
   )
 })
-albums_df
 
-
+# ===== Step 3: Get Tracks for each Album =====
 get_album_tracks <- function(album_id) {
-  resp <- request(paste0("https://api.spotify.com/v1/albums/", album_id, "/tracks")) %>%
-    req_headers(Authorization = paste("Bearer", access_token)) %>%
-    req_perform()
-  
-  tracks <- resp %>% resp_body_json()
-  
-  map_dfr(tracks$items, function(t) {
+  tr <- spotify_get(
+    paste0("https://api.spotify.com/v1/albums/", album_id, "/tracks")
+  )
+  map_dfr(tr$items, function(t) {
     tibble(track_name = t$name, track_id = t$id)
   })
 }
 
 tracks_df <- albums_df %>%
   mutate(tracks = map(album_id, get_album_tracks)) %>%
-  unnest(tracks)
+  unnest(tracks) %>%
+  filter(!is.na(track_id) & track_id != "")
 
-tracks_df
-
-
+# ===== Step 4: Get Audio Features in batches =====
 get_audio_features <- function(track_ids) {
-  # Spotify API allows up to 100 IDs at once
-  resp <- request("https://api.spotify.com/v1/audio-features") %>%
-    req_headers(Authorization = paste("Bearer", access_token)) %>%
-    req_url_query(ids = paste(track_ids, collapse = ",")) %>%
-    req_perform()
-  
-  features <- resp %>% resp_body_json()
-  bind_rows(features$audio_features)
+  if (length(track_ids) == 0) return(tibble())
+  # Batch into <= 100 IDs
+  track_ids <- track_ids[!is.na(track_ids) & track_ids != ""]
+  resp <- spotify_get(
+    "https://api.spotify.com/v1/audio-features",
+    list(ids = paste(track_ids, collapse = ","))
+  )
+  bind_rows(resp$audio_features)
 }
 
 audio_features_df <- tracks_df %>%
@@ -98,14 +105,11 @@ audio_features_df <- tracks_df %>%
   summarise(features = list(get_audio_features(track_id)), .groups = "drop") %>%
   unnest(features)
 
-audio_features_df
-
-
+# ===== Step 5: Merge Track Info with Features =====
 final_df <- tracks_df %>%
   left_join(audio_features_df, by = c("track_id" = "id"))
 
+# ===== Example Output =====
 final_df %>%
   select(track_name, album_name, danceability, energy, tempo, valence) %>%
   arrange(desc(danceability))
-
-

@@ -351,32 +351,33 @@ combi_audio_features |>
   labs(y = "Album Name") +
   ggtitle("Density plot of Sauti Sol's mode_name distributions", subtitle = "Based on mode_name pulled from Spotify's Web API with spotifyr")
 
-# 6) Most popular tracks on Spotify - Sauti Sol
+# # 6) Most popular tracks on Spotify - Sauti Sol - Needs update
+# 
+# combi_artist_top_tracks |> 
+#   filter(combi_artist_top_tracks[[16]][[1]][3] == "Sauti Sol") %>%
+#   filter(album.name %in% c("Afrikan Sauce", "Midnight Train")) %>%
+#   select(name, popularity, album.name) %>%
+#   arrange(desc(popularity)) %>%
+#   ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
+#   geom_col() + 
+#   coord_flip() +
+#   theme_minimal()
 
-combi_artist_top_tracks |> 
-  filter(combi_artist_top_tracks[[16]][[1]][3] == "Sauti Sol") %>%
-  filter(album.name %in% c("Afrikan Sauce", "Midnight Train")) %>%
-  select(name, popularity, album.name) %>%
-  arrange(desc(popularity)) %>%
-  ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
-  geom_col() + 
-  coord_flip() +
-  theme_minimal()
-
-# 7) Artist Followers
-
-combi_artist_album_follower |> 
-  select(name, popularity, followers.total) %>%
-  arrange(desc(popularity)) %>%
-  ggplot(aes(x = reorder(name,popularity), y = popularity)) +
-  geom_col() + 
-  coord_flip() +
-  theme_minimal()
-
-combi_artist_album_follower |> 
-  select(name, popularity, followers.total) %>%
-  arrange(desc(followers.total)) %>%
-  ggplot(aes(x = reorder(name, followers.total), y = followers.total)) +
-  geom_col() + 
-  coord_flip() +
-  theme_minimal()
+# # 7) Artist Followers - Needs to be Updated
+# 
+# combi_artist_album_follower |> 
+#   select(name, popularity, followers.total) %>%
+#   arrange(desc(popularity)) %>%
+#   ggplot(aes(x = reorder(name,popularity), y = popularity)) +
+#   geom_col() + 
+#   coord_flip() +
+#   theme_minimal()
+# 
+# combi_artist_album_follower |> 
+#   select(name, popularity, followers.total) %>%
+#   arrange(desc(followers.total)) %>%
+#   ggplot(aes(x = reorder(name, followers.total), y = followers.total)) +
+#   geom_col() + 
+#   coord_flip() +
+#   theme_minimal()
+# 

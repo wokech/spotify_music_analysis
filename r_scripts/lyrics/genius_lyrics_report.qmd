@@ -1,0 +1,194 @@
+---
+title: "Lyric & Language Analysis of {{artist_name}}"
+author: "Your Name"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+execute:
+  echo: true
+  warning: false
+  message: false
+params:
+  artist_name: "Kendrick Lamar"
+  max_songs: 50
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+# Load libraries
+library(geniusr)        # Genius API access
+library(tidyverse)      # data wrangling & plotting
+library(tidytext)       # tokenization & text analysis
+library(quanteda)       # lexical stats
+library(syuzhet)        # sentiment & emotion
+library(topicmodels)    # topic modeling
+library(wordcloud2)     # word clouds
+library(stringr)        # string operations
+library(glue)           # dynamic text
+library(lubridate)      # date handling
+
+Sys.getenv("GENIUS_API_TOKEN")
+geniusr::genius_token()
+
+
+# Artist & settings
+artist_name <- params$artist_name
+max_songs <- params$max_songs
+```
+
+1. Data Collection
+
+```{r}
+# Search for artist ID
+artist_search <- search_artist(artist_name)
+artist_id <- artist_search$artist_id[1]
+
+# Get song list
+songs_df <- get_artist_songs(artist_id) %>%
+  arrange(desc(song_id)) %>%
+  head(max_songs)
+
+# Get lyrics for each song
+lyrics_df <- map_dfr(songs_df$song_id, function(id) {
+  tryCatch(
+    get_lyrics_id(id) %>%
+      mutate(song_id = id),
+    error = function(e) NULL
+  )
+})
+
+# Merge with song metadata
+lyrics_all <- lyrics_df %>%
+  left_join(songs_df, by = "song_id") %>%
+  filter(!is.na(lyric))
+```
+
+2. Vocabulary & Complexity
+
+```{r}
+# Tokenize
+tidy_lyrics <- lyrics_all %>%
+  unnest_tokens(word, lyric) %>%
+  anti_join(stop_words, by = "word")
+
+# Vocabulary stats
+total_words <- nrow(tidy_lyrics)
+unique_words <- n_distinct(tidy_lyrics$word)
+lexical_diversity <- unique_words / total_words
+
+data.frame(
+  Metric = c("Total Words", "Unique Words", "Lexical Diversity"),
+  Value = c(total_words, unique_words, round(lexical_diversity, 3))
+)
+```
+
+```{r}
+# Most frequent words
+tidy_lyrics %>%
+  count(word, sort = TRUE) %>%
+  head(20) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 20 Most Frequent Words", x = NULL, y = "Count")
+
+```
+
+3. Word Cloud
+
+```{r}
+tidy_lyrics %>%
+  count(word) %>%
+  wordcloud2(size = 0.7)
+```
+
+4. Sentiment Analysis
+
+```{r}
+# NRC sentiment
+nrc_sentiment <- tidy_lyrics %>%
+  inner_join(get_sentiments("nrc"), by = "word") %>%
+  count(sentiment, sort = TRUE)
+
+nrc_sentiment %>%
+  ggplot(aes(x = reorder(sentiment, n), y = n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(title = "Emotion Breakdown (NRC Lexicon)", x = NULL, y = "Count")
+```
+
+```{r}
+# Syuzhet polarity
+polarity <- get_sentiment(tidy_lyrics$word, method = "syuzhet")
+mean_polarity <- mean(polarity, na.rm = TRUE)
+mean_polarity
+
+```
+
+5. Topic Modeling
+
+```{r}
+# Prepare document-term matrix
+dtm <- tidy_lyrics %>%
+  count(song_id, word) %>%
+  cast_dtm(song_id, word, n)
+
+lda_model <- LDA(dtm, k = 5, control = list(seed = 123))
+topics <- tidy(lda_model, matrix = "beta")
+
+# Top terms per topic
+top_terms <- topics %>%
+  group_by(topic) %>%
+  slice_max(beta, n = 7) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>%
+  ggplot(aes(x = reorder_within(term, beta, topic), y = beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free_y") +
+  coord_flip() +
+  scale_x_reordered() +
+  labs(title = "Top Terms per Topic", x = NULL, y = "Beta")
+
+```
+
+6. Trends Over Time
+
+```{r}
+# Sentiment over release year
+song_sentiment <- tidy_lyrics %>%
+  inner_join(get_sentiments("bing"), by = "word") %>%
+  mutate(sentiment_value = ifelse(sentiment == "positive", 1, -1)) %>%
+  group_by(title) %>%
+  summarise(avg_sentiment = mean(sentiment_value)) %>%
+  left_join(songs_df, by = "title") %>%
+  mutate(year = year(as.Date(song_release_date, "%Y-%m-%d")))
+
+song_sentiment %>%
+  filter(!is.na(year)) %>%
+  ggplot(aes(x = year, y = avg_sentiment)) +
+  geom_line(color = "darkred") +
+  geom_point() +
+  labs(title = "Average Sentiment Over Time", x = "Year", y = "Sentiment Score")
+
+```
+
+7. Conclusions
+
+```{r}
+cat(glue("
+**Summary Insights for {artist_name}:**
+
+- Analyzed {n_distinct(lyrics_all$title)} songs.
+- Vocabulary size: {unique_words} unique words across {total_words} total words.
+- Lexical diversity: {round(lexical_diversity, 3)}.
+- Average sentiment polarity: {round(mean_polarity, 3)}.
+- Most common lyrical themes: {paste(unique(top_terms$term[1:10]), collapse = ', ')}.
+"))
+```
+

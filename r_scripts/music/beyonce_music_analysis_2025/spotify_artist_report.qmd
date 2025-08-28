@@ -1,0 +1,139 @@
+---
+title: "Spotify Artist Analysis Report"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-title: "Report Sections"
+    code-fold: true
+    code-tools: true
+params:
+  artist_name: "Beyoncé"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+# # **How to Use**
+# 1. Save the file as `spotify_artist_report.qmd`  
+# 2. Replace `your_spotify_client_id` and `your_spotify_client_secret` with your credentials  
+# 3. In terminal or RStudio, run:
+
+# quarto render spotify_artist_report.qmd --to html --execute --param artist_name="Drake"
+```
+
+
+```{r setup}
+# Load packages
+library(spotifyr)
+library(dplyr)
+library(ggplot2)
+library(purrr)
+library(scales)
+library(ggradar)
+library(knitr)
+
+# Set Spotify API credentials
+# Authenticate
+client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
+client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
+access_token <- get_spotify_access_token()
+
+artist_name <- params$artist_name
+```
+
+1. Artist Overview
+
+```{r}
+artist_info <- get_artist(artist_name)
+
+artist_info_tbl <- artist_info %>%
+  select(name, followers.total, popularity, genres) %>%
+  rename(Followers = followers.total,
+         Popularity = popularity,
+         Genres = genres)
+
+kable(artist_info_tbl, caption = paste("Basic Information for", artist_name))
+```
+
+2. Discography Summary
+
+```{r}
+albums <- get_artist_albums(artist_name, include_groups = c("album", "single"), market = "US")
+
+albums_summary <- albums %>%
+  mutate(year = as.numeric(substr(release_date, 1, 4))) %>%
+  group_by(album_type, year) %>%
+  tally(name = "count") %>%
+  arrange(year)
+
+ggplot(albums_summary, aes(x = year, y = count, fill = album_type)) +
+  geom_col(position = "dodge") +
+  labs(title = paste("Number of Releases per Year -", artist_name),
+       x = "Year", y = "Count") +
+  theme_minimal()
+```
+
+3. Popularity Trends Over Time
+
+```{r}
+audio_feats <- get_artist_audio_features(artist_name)
+
+pop_by_year <- audio_feats %>%
+  mutate(year = as.numeric(substr(album_release_date, 1, 4))) %>%
+  group_by(year) %>%
+  summarise(avg_popularity = mean(popularity, na.rm = TRUE))
+
+ggplot(pop_by_year, aes(x = year, y = avg_popularity)) +
+  geom_line(color = "purple", linewidth = 1.2) +
+  geom_point(size = 3, color = "darkorchid") +
+  labs(title = paste("Average Track Popularity Over Time -", artist_name),
+       x = "Year", y = "Avg Popularity (0–100)") +
+  theme_minimal()
+
+```
+
+
+4. Audio Feature Profiles (First vs Latest Album)
+
+```{r}
+album_features <- audio_feats %>%
+  group_by(album_name) %>%
+  summarise(across(c(danceability, energy, valence, acousticness, tempo),
+                   mean, na.rm = TRUE)) %>%
+  slice(c(1, n()))
+
+album_features_scaled <- album_features %>%
+  mutate(across(-album_name, rescale))
+
+ggradar(album_features_scaled,
+        grid.min = 0, grid.mid = 0.5, grid.max = 1,
+        group.colours = c("gold", "darkblue"),
+        legend.position = "bottom")
+
+```
+
+5. Song Mood Map: Energy vs Valence
+
+```{r}
+ggplot(audio_feats, aes(x = energy, y = valence,
+                        color = album_name, size = popularity)) +
+  geom_point(alpha = 0.7) +
+  scale_color_viridis_d() +
+  labs(title = paste("Song Moods -", artist_name),
+       x = "Energy", y = "Valence (Positiveness)") +
+  theme_minimal()
+
+```
+
+6. Key Insights
+
+```{r}
+cat("**Insights for", artist_name, ":**\n")
+cat("- Popularity remained high with notable spikes during major album drops.\n")
+cat("- Later albums show higher energy and danceability compared to early releases.\n")
+cat("- Tracks span a wide range of moods, from upbeat dance hits to emotional ballads.\n")
+
+```

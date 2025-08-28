@@ -641,17 +641,17 @@ combi_audio_features_naija |>
   labs(y = "Album Name") +
   ggtitle("Density plot of Burna Boy's mode_name distributions", subtitle = "Based on mode_name pulled from Spotify's Web API with spotifyr")
 
-# 6) Most popular tracks on Spotify - Burna Boy
-
-combi_artist_top_tracks_naija |> 
-  filter(combi_artist_top_tracks_naija[[16]][[16]][3] == "Burna Boy") %>%
-  filter(album.name %in% c("African Giant", "Redemption", "Love, Damini")) %>%
-  select(name, popularity, album.name) %>%
-  arrange(desc(popularity)) %>%
-  ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
-  geom_col() + 
-  coord_flip() +
-  theme_minimal()
+# # 6) Most popular tracks on Spotify - Burna Boy - Needs update
+# 
+# combi_artist_top_tracks_naija |> 
+#   filter(combi_artist_top_tracks_naija[[16]][[16]][3] == "Burna Boy") %>%
+#   filter(album.name %in% c("African Giant", "Redemption", "Love, Damini")) %>%
+#   select(name, popularity, album.name) %>%
+#   arrange(desc(popularity)) %>%
+#   ggplot(aes(x = reorder(name,popularity), y = popularity, fill = album.name)) +
+#   geom_col() + 
+#   coord_flip() +
+#   theme_minimal()
 
 #######################
 
