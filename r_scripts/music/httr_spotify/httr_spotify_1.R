@@ -17,7 +17,7 @@ library(usethis)
 library(tidyverse)
 
 # Create/Edit the .Renviron
-# edit_r_environ()
+edit_r_environ()
 
 client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
 client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
