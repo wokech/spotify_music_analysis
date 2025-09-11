@@ -102,7 +102,7 @@ combi_artist_album_follower_naija |>
         legend.title = element_blank(),
         legend.position = "none") 
 
-ggsave("images/afrobeats_nigeria/popularity_1.png", width = 12, height = 12, dpi = 300)
+#ggsave("images/afrobeats_nigeria/popularity_1.png", width = 12, height = 12, dpi = 300)
 
 # b) Artist Follower Numbers on Spotify
 
@@ -123,7 +123,7 @@ combi_artist_album_follower_naija |>
        title = "Selected Afrobeats musicians and their\nfollower counts",
        subtitle = "Dataset compiled from Spotify in August 2024",
        caption = "Data Source: Spotify") +
-  scale_y_continuous(labels = comma,
+  scale_y_continuous(labels = scales::comma,
                      breaks = seq(0, 12, by = 2),
                      minor_breaks = seq(0, 12, by = 1),
                      expand = expansion(mult = c(0, 0.1))) + # Keep labels within plot area
@@ -144,5 +144,5 @@ combi_artist_album_follower_naija |>
         legend.title = element_blank(),
         legend.position = "none") 
 
-ggsave("images/afrobeats_nigeria/followers_1.png", width = 12, height = 12, dpi = 300)
+#ggsave("images/afrobeats_nigeria/followers_1.png", width = 12, height = 12, dpi = 300)
 
