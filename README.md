@@ -10,8 +10,12 @@ The main goal of this project is to gain insights into how different musical fea
 
 ### 1) Spotify Follower Counts for Afrobeats Musicians
 
+[Code](r_scripts/music/afrobeats_nigeria/part_2_artist_popularity_followers.R)
+
 ![Afrobeats and Spotify Follower Counts](images/afrobeats_nigeria/followers_1.png)
 
 ### 2) Afrobeats Musicians Popularity
+
+[Code](r_scripts/music/afrobeats_nigeria/part_2_artist_popularity_followers.R)
 
 ![Popularity of Afrobeats Musicians](images/afrobeats_nigeria/popularity_1.png)
