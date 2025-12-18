@@ -67,8 +67,8 @@ combi_artist_album_follower_naija <- readRDS("saved_data/combi_artist_album_foll
 # a) Artist Popularity on Spotify
 
 combi_artist_album_follower_naija |> 
-  select(name, popularity, followers.total) %>%
-  arrange(desc(popularity)) %>%
+  select(name, popularity, followers.total) |>
+  arrange(desc(popularity)) |>
   ggplot(aes(x = reorder(name,popularity), y = popularity)) +
   geom_col(fill = "skyblue") + 
   geom_text(aes(label = popularity, y = popularity-0.1),  
@@ -107,9 +107,9 @@ combi_artist_album_follower_naija |>
 # b) Artist Follower Numbers on Spotify
 
 combi_artist_album_follower_naija |> 
-  select(name, popularity, followers.total) %>%
+  select(name, popularity, followers.total) |>
   mutate(followers.total.millions = followers.total/1000000) |>
-  arrange(desc(followers.total.millions)) %>%
+  arrange(desc(followers.total.millions)) |>
   ggplot(aes(x = reorder(name, followers.total.millions), y = followers.total.millions)) +
   geom_col(fill = "skyblue") + 
   geom_text(aes(label = round(followers.total.millions,2), y = followers.total.millions),  
