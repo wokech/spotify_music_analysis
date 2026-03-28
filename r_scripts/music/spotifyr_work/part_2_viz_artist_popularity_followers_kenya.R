@@ -1,6 +1,5 @@
 # Music Analysis with Spotify
-# Part 2: Assess popularity and followers
-# Genre: Afrobeats / Nigeria
+# Part 2: Assess popularity and followers for Kenya
 # William Okech
 
 # Notes
@@ -10,26 +9,16 @@
 # https://rdrr.io/github/charlie86/spotifyr
 
 # Artists include:
-# 1) Rema
-# 2) Burna Boy
-# 3) CKay
-# 4) Wizkid
-# 5) Fireboy DML
-# 6) Omah Lay
-# 7) Ayra Starr
-# 8) Asake
-# 9) Tems
-# 10) Yemi Alade
-# 11) Davido
-# 12) Mr Eazi
-# 13) Ruger
-# 14) Tiwa Savage
-# 15) Joeboy
-# 16) Kizz Daniel
-# 17) Adekunle Gold
-# 18) Patoranking
-# 19) Pheelz
-# 20) Olamide
+# 1) Sauti Sol
+# 2) Nviiri
+# 3) Otile Brown
+# 4) Nyashinski
+# 5) Bensoul
+# 6) Wakadinali
+# 7) Buruklyn Boyz
+# 8) H-Art The Band
+# 9) Mejja
+# 10) Khaligraph Jones
 
 # 1) Load the required packages
 
@@ -58,15 +47,15 @@ access_token <- get_spotify_access_token()
 
 # 3) Load the previously saved data from Part 1
 
-# The 12 Nigerian Afrobeat musicians albums and followers
-combi_artist_album_follower_naija <- readRDS("saved_data/combi_artist_album_follower_naija.RDS")
+# Kenyan musicians albums and followers
+combi_artist_album_follower_kenya <- readRDS("saved_data/combi_artist_album_follower_1.RDS")
 
 
 # 4) EDA Plots for Analysis
 
 # a) Artist Popularity on Spotify
 
-combi_artist_album_follower_naija |> 
+combi_artist_album_follower_kenya |> 
   select(name, popularity, followers.total) |>
   arrange(desc(popularity)) |>
   ggplot(aes(x = reorder(name,popularity), y = popularity)) +
@@ -79,7 +68,7 @@ combi_artist_album_follower_naija |>
   theme_classic() +
   labs(x = "",
        y = "Popularity",
-       title = "Popularity of selected Afrobeats musicians",
+       title = "Popularity of selected Kenyan musicians",
        subtitle = "Dataset compiled from Spotify in August 2024",
        caption = "Data Source: Spotify") +
   scale_y_continuous(breaks = seq(0, 100, by = 10),
@@ -102,11 +91,11 @@ combi_artist_album_follower_naija |>
         legend.title = element_blank(),
         legend.position = "none") 
 
-#ggsave("images/afrobeats_nigeria/popularity_1.png", width = 12, height = 12, dpi = 300)
+ggsave("images/kenya/popularity_1.png", width = 12, height = 12, dpi = 300)
 
 # b) Artist Follower Numbers on Spotify
 
-combi_artist_album_follower_naija |> 
+combi_artist_album_follower_kenya |> 
   select(name, popularity, followers.total) |>
   mutate(followers.total.millions = followers.total/1000000) |>
   arrange(desc(followers.total.millions)) |>
@@ -120,13 +109,13 @@ combi_artist_album_follower_naija |>
   theme_classic() +
   labs(x = "",
        y = "Followers (millions)",
-       title = "Selected Afrobeats musicians and their\nfollower counts",
+       title = "Selected Kenyan musicians and their\nfollower counts",
        subtitle = "Dataset compiled from Spotify in August 2024",
        caption = "Data Source: Spotify") +
   scale_y_continuous(labels = scales::comma,
                      breaks = seq(0, 12, by = 2),
                      minor_breaks = seq(0, 12, by = 1),
-                     expand = expansion(mult = c(0, 0.1))) + # Keep labels within plot area
+                     expand = expansion(mult = c(0, 0.15))) + # Keep labels within plot area
   theme(axis.title.x = element_text(size = 25),
         axis.title.y = element_text(size = 25),
         axis.text.x = element_text(size = 25),
@@ -144,5 +133,5 @@ combi_artist_album_follower_naija |>
         legend.title = element_blank(),
         legend.position = "none") 
 
-#ggsave("images/afrobeats_nigeria/followers_1.png", width = 12, height = 12, dpi = 300)
+ggsave("images/kenya/followers_1.png", width = 12, height = 12, dpi = 300)
 

@@ -1,5 +1,5 @@
-
-
+# Using httr2 to extract data from Spotify API
+# Alternative to spotifyR
 
 # Load packages and libraries
 
@@ -17,7 +17,7 @@ library(usethis)
 library(tidyverse)
 
 # Create/Edit the .Renviron
-edit_r_environ()
+# edit_r_environ()
 
 client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
 client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
@@ -87,6 +87,8 @@ tracks_df <- albums_df %>%
   unnest(tracks) %>%
   filter(!is.na(track_id) & track_id != "")
 
+#########AUDIO FEATURES ARE NOT WORKIG ANY MORE############
+
 # ===== Step 4: Get Audio Features in batches =====
 get_audio_features <- function(track_ids) {
   if (length(track_ids) == 0) return(tibble())
@@ -113,3 +115,4 @@ final_df <- tracks_df %>%
 final_df %>%
   select(track_name, album_name, danceability, energy, tempo, valence) %>%
   arrange(desc(danceability))
+

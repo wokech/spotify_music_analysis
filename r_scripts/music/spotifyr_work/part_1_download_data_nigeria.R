@@ -1,6 +1,7 @@
-# Music Analysis with Spotify
+# Music Analysis with Spotify (Nigeria)
+
 # Part 1: Download the required datasets for analysis
-# Genre: Afrobeats / Nigeria
+
 # William Okech
 
 # spotifyr
@@ -15,7 +16,7 @@ library(tidyverse)
 library(knitr)
 library(lubridate)
 #install.packages("ggjoy")
-library(ggjoy) #ggjoy has been deprecated for ggridges
+#library(ggjoy) #ggjoy has been deprecated for ggridges
 library(ggridges)
 
 # 2) Authentication
@@ -31,7 +32,11 @@ access_token <- get_spotify_access_token()
 
 ############## KEEP SECRET ###########################
 
-# 3) Analysis of musical features for 12 of the most popular Nigerian artists
+# 3) Identify the artists and get the artist audio features
+
+###################################################################
+###### Use the search_spotify() to get all the artist features ####
+###################################################################
 
 # Artists include:
 # 1) Rema
@@ -57,7 +62,8 @@ access_token <- get_spotify_access_token()
 
 # a) Get the artist audio features for all 20 musicians
 
-# Use the search_spotify() to get all the artist features
+#########GET ARTIST AUDIO FEATURES IS NO LONGER WORKING#############
+
 # Then use the get_artist_audio_features() function defaults to "album" 
 # so you might want to include "single."
 
@@ -122,37 +128,37 @@ access_token <- get_spotify_access_token()
 
 # DATA IS STORED IN RDS
 
-rema_2 <- get_artist_top_tracks('46pWGuE3dSwY3bMMXGBvVS')
-burna_boy_2 <- get_artist_top_tracks('3wcj11K77LjEY1PkEazffa')
-ckay_2 <- get_artist_top_tracks('048LktY5zMnakWq7PTtFrz')
-wizkid_2 <- get_artist_top_tracks('3tVQdUvClmAT7URs9V3rsp')
-fireboy_2 <- get_artist_top_tracks('75VKfyoBlkmrJFDqo1o2VY')
-omah_lay_2 <- get_artist_top_tracks('5yOvAmpIR7hVxiS6Ls5DPO')
-ayra_starr_2 <- get_artist_top_tracks('3ZpEKRjHaHANcpk10u6Ntq')
-asake_2 <- get_artist_top_tracks('3a1tBryiczPAZpgoZN9Rzg')
-tems_2 <- get_artist_top_tracks('687cZJR45JO7jhk1LHIbgq')
-yemi_alade_2 <- get_artist_top_tracks('7fKO99ryLDo8VocdtVvwZW')
-davido_2 <- get_artist_top_tracks('0Y3agQaa6g2r0YmHPOO9rh')
-mr_eazi_2 <- get_artist_top_tracks('4TAoP0f9OuWZUesao43xUW')
-ruger_2 <- get_artist_top_tracks('0a1SidMjD8D6EHvJph4n2H')
-tiwa_savage_2 <- get_artist_top_tracks('1hNaHKp2Za5YdOAG0WnRbc')
-joeboy_2 <- get_artist_top_tracks('1XavfPKBpNjkOfxHINlMHF')
-kizz_daniel_2 <- get_artist_top_tracks('1X6cBGnXpEpN7CmflLKmLV')
-adekunle_gold_2 <- get_artist_top_tracks('2IK173RXLiCSQ8fhDlAb3s')
-patoranking_2 <- get_artist_top_tracks('2hKQc001G7ggs3ZyxMdkGq')
-pheelz_2 <- get_artist_top_tracks('5Jv1MsZBh0sqokFq7pU8Xg')
-olamide_2 <- get_artist_top_tracks('4ovtyvs7j1jSmwhkBGHqSr')
+# rema_2 <- get_artist_top_tracks('46pWGuE3dSwY3bMMXGBvVS')
+# burna_boy_2 <- get_artist_top_tracks('3wcj11K77LjEY1PkEazffa')
+# ckay_2 <- get_artist_top_tracks('048LktY5zMnakWq7PTtFrz')
+# wizkid_2 <- get_artist_top_tracks('3tVQdUvClmAT7URs9V3rsp')
+# fireboy_2 <- get_artist_top_tracks('75VKfyoBlkmrJFDqo1o2VY')
+# omah_lay_2 <- get_artist_top_tracks('5yOvAmpIR7hVxiS6Ls5DPO')
+# ayra_starr_2 <- get_artist_top_tracks('3ZpEKRjHaHANcpk10u6Ntq')
+# asake_2 <- get_artist_top_tracks('3a1tBryiczPAZpgoZN9Rzg')
+# tems_2 <- get_artist_top_tracks('687cZJR45JO7jhk1LHIbgq')
+# yemi_alade_2 <- get_artist_top_tracks('7fKO99ryLDo8VocdtVvwZW')
+# davido_2 <- get_artist_top_tracks('0Y3agQaa6g2r0YmHPOO9rh')
+# mr_eazi_2 <- get_artist_top_tracks('4TAoP0f9OuWZUesao43xUW')
+# ruger_2 <- get_artist_top_tracks('0a1SidMjD8D6EHvJph4n2H')
+# tiwa_savage_2 <- get_artist_top_tracks('1hNaHKp2Za5YdOAG0WnRbc')
+# joeboy_2 <- get_artist_top_tracks('1XavfPKBpNjkOfxHINlMHF')
+# kizz_daniel_2 <- get_artist_top_tracks('1X6cBGnXpEpN7CmflLKmLV')
+# adekunle_gold_2 <- get_artist_top_tracks('2IK173RXLiCSQ8fhDlAb3s')
+# patoranking_2 <- get_artist_top_tracks('2hKQc001G7ggs3ZyxMdkGq')
+# pheelz_2 <- get_artist_top_tracks('5Jv1MsZBh0sqokFq7pU8Xg')
+# olamide_2 <- get_artist_top_tracks('4ovtyvs7j1jSmwhkBGHqSr')
 
 # # Combine artist top tracks
-combi_artist_top_tracks_naija <- rbind(rema_2, burna_boy_2, ckay_2, wizkid_2, fireboy_2,
-                                       omah_lay_2, ayra_starr_2, asake_2, tems_2,
-                                       yemi_alade_2, davido_2, mr_eazi_2,
-                                       ruger_2, tiwa_savage_2, joeboy_2,
-                                       kizz_daniel_2, adekunle_gold_2, patoranking_2,
-                                       pheelz_2, olamide_2)
+# combi_artist_top_tracks_naija <- rbind(rema_2, burna_boy_2, ckay_2, wizkid_2, fireboy_2,
+#                                        omah_lay_2, ayra_starr_2, asake_2, tems_2,
+#                                        yemi_alade_2, davido_2, mr_eazi_2,
+#                                        ruger_2, tiwa_savage_2, joeboy_2,
+#                                        kizz_daniel_2, adekunle_gold_2, patoranking_2,
+#                                        pheelz_2, olamide_2)
 
 # Save the dataframe
-saveRDS(combi_artist_top_tracks_naija, "saved_data/combi_artist_top_tracks_naija.RDS")
+# saveRDS(combi_artist_top_tracks_naija, "saved_data/combi_artist_top_tracks_naija.RDS")
 
 # c) Get the 20 artist's albums and followers
 
@@ -181,34 +187,34 @@ saveRDS(combi_artist_top_tracks_naija, "saved_data/combi_artist_top_tracks_naija
 # 19) Pheelz
 # 20) Olamide
 
-rema_3 <- get_artists('46pWGuE3dSwY3bMMXGBvVS')
-burna_boy_3 <- get_artists('3wcj11K77LjEY1PkEazffa')
-ckay_3 <- get_artists('048LktY5zMnakWq7PTtFrz')
-wizkid_3 <- get_artists('3tVQdUvClmAT7URs9V3rsp')
-fireboy_3 <- get_artists('75VKfyoBlkmrJFDqo1o2VY')
-omah_lay_3 <- get_artists('5yOvAmpIR7hVxiS6Ls5DPO')
-ayra_starr_3 <- get_artists('3ZpEKRjHaHANcpk10u6Ntq')
-asake_3 <- get_artists('3a1tBryiczPAZpgoZN9Rzg')
-tems_3 <- get_artists('687cZJR45JO7jhk1LHIbgq')
-yemi_alade_3 <- get_artists('7fKO99ryLDo8VocdtVvwZW')
-davido_3 <- get_artists('0Y3agQaa6g2r0YmHPOO9rh')
-mr_eazi_3 <- get_artists('4TAoP0f9OuWZUesao43xUW')
-ruger_3 <- get_artists('0a1SidMjD8D6EHvJph4n2H')
-tiwa_savage_3 <- get_artists('1hNaHKp2Za5YdOAG0WnRbc')
-joeboy_3 <- get_artists('1XavfPKBpNjkOfxHINlMHF')
-kizz_daniel_3 <- get_artists('1X6cBGnXpEpN7CmflLKmLV')
-adekunle_gold_3 <- get_artists('2IK173RXLiCSQ8fhDlAb3s')
-patoranking_3 <- get_artists('2hKQc001G7ggs3ZyxMdkGq')
-pheelz_3 <- get_artists('5Jv1MsZBh0sqokFq7pU8Xg')
-olamide_3 <- get_artists('4ovtyvs7j1jSmwhkBGHqSr')
+# rema_3 <- get_artists('46pWGuE3dSwY3bMMXGBvVS')
+# burna_boy_3 <- get_artists('3wcj11K77LjEY1PkEazffa')
+# ckay_3 <- get_artists('048LktY5zMnakWq7PTtFrz')
+# wizkid_3 <- get_artists('3tVQdUvClmAT7URs9V3rsp')
+# fireboy_3 <- get_artists('75VKfyoBlkmrJFDqo1o2VY')
+# omah_lay_3 <- get_artists('5yOvAmpIR7hVxiS6Ls5DPO')
+# ayra_starr_3 <- get_artists('3ZpEKRjHaHANcpk10u6Ntq')
+# asake_3 <- get_artists('3a1tBryiczPAZpgoZN9Rzg')
+# tems_3 <- get_artists('687cZJR45JO7jhk1LHIbgq')
+# yemi_alade_3 <- get_artists('7fKO99ryLDo8VocdtVvwZW')
+# davido_3 <- get_artists('0Y3agQaa6g2r0YmHPOO9rh')
+# mr_eazi_3 <- get_artists('4TAoP0f9OuWZUesao43xUW')
+# ruger_3 <- get_artists('0a1SidMjD8D6EHvJph4n2H')
+# tiwa_savage_3 <- get_artists('1hNaHKp2Za5YdOAG0WnRbc')
+# joeboy_3 <- get_artists('1XavfPKBpNjkOfxHINlMHF')
+# kizz_daniel_3 <- get_artists('1X6cBGnXpEpN7CmflLKmLV')
+# adekunle_gold_3 <- get_artists('2IK173RXLiCSQ8fhDlAb3s')
+# patoranking_3 <- get_artists('2hKQc001G7ggs3ZyxMdkGq')
+# pheelz_3 <- get_artists('5Jv1MsZBh0sqokFq7pU8Xg')
+# olamide_3 <- get_artists('4ovtyvs7j1jSmwhkBGHqSr')
 
 # Combine artist albums and followers
-combi_artist_album_follower_naija <- rbind(rema_3, burna_boy_3, ckay_3, wizkid_3, fireboy_3,
-                                           omah_lay_3, ayra_starr_3, asake_3, tems_3,
-                                           yemi_alade_3, davido_3, mr_eazi_3,
-                                           ruger_3, tiwa_savage_3, joeboy_3,
-                                           kizz_daniel_3, adekunle_gold_3, patoranking_3,
-                                           pheelz_3, olamide_3)
+# combi_artist_album_follower_naija <- rbind(rema_3, burna_boy_3, ckay_3, wizkid_3, fireboy_3,
+#                                            omah_lay_3, ayra_starr_3, asake_3, tems_3,
+#                                            yemi_alade_3, davido_3, mr_eazi_3,
+#                                            ruger_3, tiwa_savage_3, joeboy_3,
+#                                            kizz_daniel_3, adekunle_gold_3, patoranking_3,
+#                                            pheelz_3, olamide_3)
 
 # Save the dataframe
-saveRDS(combi_artist_album_follower_naija, "saved_data/combi_artist_album_follower_naija.RDS")
+# saveRDS(combi_artist_album_follower_naija, "saved_data/combi_artist_album_follower_naija.RDS")
