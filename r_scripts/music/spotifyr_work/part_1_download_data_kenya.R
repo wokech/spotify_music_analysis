@@ -16,7 +16,7 @@ library(tidyverse)
 library(knitr)
 library(lubridate)
 #install.packages("ggjoy")
-library(ggjoy) #ggjoy has been deprecated for ggridges
+#library(ggjoy) #ggjoy has been deprecated for ggridges
 library(ggridges)
 
 # 2) Authentication
