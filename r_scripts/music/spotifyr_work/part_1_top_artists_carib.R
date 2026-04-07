@@ -1,4 +1,4 @@
-# Music Analysis with Spotify (Caribbean)
+# Music Analysis with Spotify (Caribbean) - Part 1
 
 # Data: SongStats / SocialBlade / Soundcharts
 
@@ -33,6 +33,6 @@ top_artists_carib_spotify_data_apr_2026 <- map_dfr(top_artists_carib_apr_2026, f
   )
 })
 
-write_xl(top_artists_carib_spotify_data_apr_2026, "saved_data/top_artists_carib_spotify_data_apr_2026.xlsx")
+write_xlsx(top_artists_carib_spotify_data_apr_2026, "saved_data/top_artists_carib_spotify_data_apr_2026.xlsx")
 
 

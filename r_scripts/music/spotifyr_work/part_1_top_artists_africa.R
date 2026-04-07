@@ -1,4 +1,4 @@
-# Music Analysis with Spotify (Africa)
+# Music Analysis with Spotify (Africa) - Part 1
 
 # Data: SongStats / SocialBlade / Soundcharts
 
