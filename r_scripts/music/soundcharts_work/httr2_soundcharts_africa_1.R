@@ -1,4 +1,4 @@
-# Using httr2 to extract data from Soundcharts API
+# Using httr2 to extract data from Soundcharts API - Africa
 
 # Load packages and libraries
 
@@ -21,10 +21,10 @@ library(tidyverse)
 client_id <- Sys.getenv("SOUNDCHARTS_CLIENT_ID")
 client_secret <- Sys.getenv("SOUNDCHARTS_CLIENT_SECRET")
 
-# Example - Get for 1 song
+# 1) Sofiya - Nzau Mwaki
 
 # Create and perform the request 
-response <- request("https://customer.api.soundcharts.com/api/v2.25/song/7d534228-5165-11e9-9375-549f35161576") %>%
+response <- request("https://customer.api.soundcharts.com/api/v2.25/song/by-isrc/NLRD52339318") %>%
   req_headers(
     'x-app-id' = client_id,
     'x-api-key' = client_secret
@@ -37,5 +37,8 @@ data <- response %>%
 
 # Get audio details
 
-data$object$audio
+audio_features <- data$object$audio
+
+as_tibble(audio_features)
+
 
