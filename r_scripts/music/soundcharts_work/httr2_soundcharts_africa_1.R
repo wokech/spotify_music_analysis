@@ -39,6 +39,9 @@ data <- response %>%
 
 audio_features <- data$object$audio
 
-as_tibble(audio_features)
+audio_features_sofiya_nzau <- as_tibble(audio_features) |>
+  mutate(name = "Sofiya Nzau") |>
+  mutate(song = "Mwaki") |>
+  relocate(name, song)
 
 
